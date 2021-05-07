@@ -1,0 +1,25 @@
+{
+  "name": "shiva",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Jonny Gamba",
+  "license": "MIT",
+  "dependencies": {
+    "applescript": "^1.0.0",
+    "chokidar": "^3.5.1",
+    "cloudinary": "^1.25.1",
+    "dotenv": "^9.0.0",
+    "nodemon": "^2.0.7",
+    "sharp": "^0.28.1"
+  },
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "devDependencies": {
+    "eslint": "^7.25.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1"
+  }
+}
