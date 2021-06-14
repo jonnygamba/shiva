@@ -1,3 +1,4 @@
+const axios = require('axios')
 const chokidar = require('chokidar')
 const applescript = require('applescript')
 const cloudinary = require('cloudinary').v2
@@ -15,7 +16,7 @@ cloudinary.config({
 })
 
 const script =
-  'tell application "Google Chrome" to get URL of active tab of front window as string'
+  'tell application "Google Chrome" to get URL of active tab of front window as string '
 
 // cloudinary.search
 //   .expression("resource_type:image AND tags=new")
@@ -56,14 +57,26 @@ chokidar
                 metadata: `metadata_user_id=1|metadata_url=${rtn}|metadata_ocr=${ocr
                   .toString()
                   .replace('|', '')}`,
-                overwrite: true,
-                notification_url:
-                  'https://gilgamesh.jonnygamba.workers.dev/cards/new'
+                overwrite: true
               },
-              function (error, result) {
+              async function (error, result) {
                 if (error) {
                   console.log(error)
                   return
+                }
+                try {
+                  await axios(
+                    'http://localhost:3000/api/inputs/cloudinary?database=24a2356964104481ac700d0ad77148c0',
+                    {
+                      method: 'POST',
+                      data: { ...result },
+                      headers: {
+                        'Content-type': 'application/json'
+                      }
+                    }
+                  )
+                } catch (err) {
+                  console.log(err)
                 }
 
                 try {
@@ -76,7 +89,6 @@ chokidar
                 } catch (err) {
                   console.error(err)
                 }
-                console.log(error, result)
               }
             )
           }, 1000)
@@ -101,7 +113,7 @@ function displayNotification (message) {
 
 chokidar
   .watch('/Users/jonnygamba/nodejs/quezacotl/**/*.js', {
-    gnored: ['**/node_modules/**/*', '**/.git/**/*'],
+    ignored: ['**/node_modules/**/*', '**/.git/**/*'],
     ignoreInitial: true
   })
   .on('change', () => {
