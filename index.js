@@ -18,15 +18,6 @@ cloudinary.config({
 const script =
   'tell application "Google Chrome" to get URL of active tab of front window as string '
 
-// cloudinary.search
-//   .expression("resource_type:image AND tags=new")
-//   .with_field("metadata")
-//   .with_field("tags")
-//   .sort_by("public_id", "desc")
-//   .max_results(30)
-//   .execute()
-//   .then((result) => console.log(result));
-
 chokidar
   .watch('**/*.png', { ignoreInitial: true })
   .on('add', (fileName) => {
@@ -56,7 +47,8 @@ chokidar
               {
                 metadata: `metadata_user_id=1|metadata_url=${rtn}|metadata_ocr=${ocr
                   .toString()
-                  .replace('|', '')}`,
+                  .replace('|', '')
+                  .replace('\\', '')}`,
                 overwrite: true
               },
               async function (error, result) {
@@ -91,7 +83,7 @@ chokidar
                 }
               }
             )
-          }, 1000)
+          }, 3000)
         })
     })
   })
@@ -110,19 +102,3 @@ function displayNotification (message) {
     }
   )
 }
-
-chokidar
-  .watch('/Users/jonnygamba/nodejs/quezacotl/**/*.js', {
-    ignored: ['**/node_modules/**/*', '**/.git/**/*'],
-    ignoreInitial: true
-  })
-  .on('change', () => {
-    applescript.execString(
-      `tell application "Google Chrome" to set active tab index of first window to 1
-    `,
-      (err, rtn) => {
-        if (err) console.log(err)
-        return rtn
-      }
-    )
-  })
